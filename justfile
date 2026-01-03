@@ -17,6 +17,7 @@ private_dir := justfile_directory() / 'private'
 git := require('git')
 
 
+# Initialize
 
 init: init_config init_dist init_staging init_private
 
@@ -35,23 +36,35 @@ init_private:
   mkdir -p {{private_dir}}
   git -C {{private_dir}} init
 
-
-
-staging: config_starship config_tmux config_ghostty
+# Build staging repository
 
 _build_copy target:
   mkdir -p {{staging_config_dir}}/{{target}}
   rm -rf {{staging_config_dir}}/{{target}}
   cp -r {{src_dir}}/{{target}} {{staging_config_dir}}/{{target}}
 
+staging: config_starship config_tmux config_ghostty
+
 config_ghostty: (_build_copy "ghostty")
 config_starship: (_build_copy "starship")
 config_tmux: (_build_copy "tmux")
 
+# Promote staging/ to dist/
 
-
-update_dist: staging
+promote_dist: staging
   find {{dist_dir}} -mindepth 1 -maxdepth 1 \! -name .git -exec rm -rf {} \;
   find {{staging_dir}} -mindepth 1 -maxdepth 1 -exec cp -r {} {{dist_dir}} \;
   git -C {{dist_dir}} add .
   git -C {{dist_dir}} commit --allow-empty -m 'Update dist'
+
+# Install required packages
+
+_install_package binary package:
+  ./bin/install.sh -p "{{package}}" "{{binary}}"
+
+_install_script binary script:
+  ./bin/install.sh -s "{{script}}" "{{binary}}"
+
+install_packages: package_tmux
+
+package_tmux: (_install_package "tmux" "tmux")
