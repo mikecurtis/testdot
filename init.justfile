@@ -28,12 +28,13 @@ init: init_dist init_staging init_private init_config
   #!/bin/bash
   if [ "$(getent passwd "$USER" | cut -d: -f7 | awk -F/ '{print $NF}')" != "zsh" ]; then
     if sudo true 2>/dev/null; then
-      sudo chsh -s {{zsh}} {{user}}
+      sudo chsh -s {{zsh}} {{user}} || ( echo "Failed to sudo chsh" ; exit 1 )
     else
-      chsh -s {{zsh}}
+      chsh -s {{zsh}} || ( echo "Failed to chsh" ; exit 1 )
     fi
   fi
-  ln -sf {{xdg_config_dir}}/zsh/.zshrc {{home_directory()}}/.zshrc
+  ln -sf {{xdg_config_dir}}/zsh/.zshrc {{home_directory()}}/.zshrc || \
+    ( echo "Failed to ln -sf" .zshrc ; exit 1 )
 
 init_dist:
   mkdir -p {{dist_dir}}
