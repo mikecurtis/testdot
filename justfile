@@ -28,36 +28,36 @@ user := env('USER')
 
 
 
+# Top-level commands
+
+build: init packages commit
+
+
+
 # Initialize
 
-init_config: init_dist
-  #!/bin/bash
-  mkdir -p {{dist_config_dir}}
-  [ -d {{xdg_config_dir}} ] || ln -s {{dist_config_dir}} {{xdg_config_dir}}
+init:
+  just -f ./init.justfile init
 
-init_dist:
-  mkdir -p {{dist_dir}}
-  git -C {{dist_dir}} init
 
-init_staging:
-  mkdir -p {{staging_dir}}
 
-init_private:
-  #!/bin/bash
-  mkdir -p {{private_dir}}
-  git -C {{private_dir}} init
-  {{hostenv_gen}} > {{hostenv}}
-  git -C {{private_dir}} add .
-  if [ "$(git -C {{private_dir}} status -s)" ]; then
-    git -C {{private_dir}} commit -m 'Update private'
-    echo "Deployed new version!"
-  else
-    echo "Nothing to update!"
-  fi
+# Install required packages
 
-init: init_dist init_staging init_private init_config
-  sudo chsh -s {{zsh}} {{user}}
-  ln -sf {{xdg_config_dir}}/zsh/.zshrc {{home_directory()}}/.zshrc
+packages:
+  {{installer}} -p gettext-base envsubst
+  {{installer}} -p bat batcat
+  {{installer}} -p git-delta delta
+  {{installer}} eza
+  {{installer}} -W fonts-jetbrains-mono
+  {{installer}} fzf
+  {{installer}} gh
+  {{installer}} man
+  {{installer}} -s "https://mise.run" -F mise
+  {{installer}} -p neovim nvim
+  {{installer}} -p ripgrep rg
+  {{installer}} starship
+  {{installer}} tmux
+  {{installer}} zsh
 
 
 
@@ -117,29 +117,3 @@ deploy_staging_to_dist:
 
 diff: check_dist_nodiff staging diff_staging_to_dist
 commit: check_dist_nodiff staging deploy_staging_to_dist
-
-
-
-# Install required packages
-
-packages:
-  {{installer}} -p gettext-base envsubst
-  {{installer}} -p bat batcat
-  {{installer}} -p git-delta delta
-  {{installer}} eza
-  {{installer}} -W fonts-jetbrains-mono
-  {{installer}} fzf
-  {{installer}} gh
-  {{installer}} man
-  {{installer}} -s "https://mise.run" -F mise
-  {{installer}} -p neovim nvim
-  {{installer}} -p ripgrep rg
-  {{installer}} starship
-  {{installer}} tmux
-  {{installer}} zsh
-
-
-
-# Top-level commands
-build: init packages commit
-
