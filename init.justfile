@@ -27,7 +27,7 @@ user := env('USER')
 init: init_dist init_staging init_private init_config
   #!/bin/bash
   if [ "$(getent passwd "$USER" | cut -d: -f7 | awk -F/ '{print $NF}')" != "zsh" ]; then
-    if [ sudo true 2>/dev/null ]; then
+    if sudo true 2>/dev/null; then
       sudo chsh -s {{zsh}} {{user}}
     else
       chsh -s {{zsh}}
