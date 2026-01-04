@@ -100,6 +100,7 @@ check_bootstrap () {
   cd "${DIR}" || fail "Could not enter ${DIR}"
   git pull || fail "Could not git pull"
   just -f init.justfile init || fail "Could not just init"
+  just build || fail "Could not just build"
 }
 
 check_install git
