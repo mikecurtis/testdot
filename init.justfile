@@ -15,6 +15,7 @@ private_dir := justfile_directory() / 'private'
 hostenv_gen := require('./bin/hostenv.sh')
 hostenv := private_dir / '.env'
 
+getent := require('getent')
 git := require('git')
 zsh := require('zsh')
 user := env('USER')
@@ -24,7 +25,10 @@ user := env('USER')
 # Initialize
 
 init: init_dist init_staging init_private init_config
-  chsh -s {{zsh}} {{user}}
+  #!/bin/bash
+  if [ "$(getent passwd "$USER" | cut -d: -f7 | awk -F/ '{print $NF}')" != "zsh" ]; then
+    chsh -s {{zsh}} {{user}}
+  fi
   ln -sf {{xdg_config_dir}}/zsh/.zshrc {{home_directory()}}/.zshrc
 
 init_dist:
@@ -50,4 +54,6 @@ init_private:
 init_config: init_dist
   #!/bin/bash
   mkdir -p {{dist_config_dir}}
-  [ -d {{xdg_config_dir}} ] || ln -s {{dist_config_dir}} {{xdg_config_dir}}
+  if ! [ -d {{xdg_config_dir}} ]; then
+    ln -s {{dist_config_dir}} {{xdg_config_dir}}
+  fi
