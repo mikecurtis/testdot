@@ -14,7 +14,7 @@ ZSH_AUTOSUGGEST_STRATEGY=(history)
 HISTSIZE="1000"
 SAVEHIST="999"
 
-HISTFILE="/Users/m/.zsh_history"
+HISTFILE="${HOME}/.zsh_history"
 mkdir -p "$(dirname "$HISTFILE")"
 
 setopt HIST_FCNTL_LOCK
@@ -56,8 +56,8 @@ export GH_CONFIG_DIR="${HOME}/.local/share/gh"
 
 alias -- bat=batcat
 alias -- cat=bat
-alias -- hmc='cd ${DOTFILE_DIR}'
-alias -- hms='just -d ${DOTFILE_DIR} build && unset -m '\''*_SOURCED'\'' && exec ${SHELL}'
+alias -- hmc="cd ${DOTFILE_DIR}"
+alias -- hms="just -d ${DOTFILE_DIR} build && unset -m '\''*_SOURCED'\'' && exec ${SHELL}"
 alias -- la='eza -a'
 alias -- ll='eza -l'
 alias -- lla='eza -la'
