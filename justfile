@@ -31,8 +31,9 @@ user := env('USER')
 # Initialize
 
 init_config: init_dist
+  #!/bin/bash
   mkdir -p {{dist_config_dir}}
-  ln -sf {{dist_config_dir}} {{xdg_config_dir}}
+  [ -d {{xdg_config_dir}} ] || ln -s {{dist_config_dir}} {{xdg_config_dir}}
 
 init_dist:
   mkdir -p {{dist_dir}}
