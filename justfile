@@ -64,13 +64,15 @@ packages:
 # Build staging repository
 
 _build_copy target:
-  rm -rf {{staging_config_dir}}/{{target}}
   cp -r {{src_dir}}/{{target}} {{staging_config_dir}}/{{target}}
 
 _build_envsubst dir tmpl out:
-  rm -rf {{staging_config_dir}}/{{dir}}
   mkdir -p {{staging_config_dir}}/{{dir}}
   envsubst < {{src_dir}}/{{dir}}/{{tmpl}} > {{staging_config_dir}}/{{dir}}/{{out}}
+
+reset_staging:
+  rm -rf {{staging_dir}}
+  mkdir -p {{staging_config_dir}}
 
 config_ghostty: (_build_copy "ghostty")
 config_git: (_build_envsubst "git" "config.tmpl" "config")
@@ -80,6 +82,7 @@ config_tmux: (_build_copy "tmux")
 config_zsh: (_build_copy "zsh")
 
 staging: \
+  reset_staging \
   config_ghostty \
   config_git \
   config_mise \
