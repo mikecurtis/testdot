@@ -104,4 +104,5 @@ check_bootstrap () {
 
 check_install git
 check_install just
+check_install zsh
 check_bootstrap
