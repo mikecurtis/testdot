@@ -107,18 +107,14 @@ if [ "${TMUX}" ]; then
     # current mode.
     if [ "${directory}" ]; then
       if [ "${with}" = "${name}" ]; then
-	echo a $name
         tmux rename-window "${without}"
       else
-	echo b $name
 	tmux rename-window "${with}"
       fi
     else
       if [ "${without}" = "${name}" ]; then
-	echo c $name
         tmux rename-window "${with}"
       else
-	echo d $name
 	tmux rename-window "${without}"
       fi
     fi
