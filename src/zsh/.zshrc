@@ -190,13 +190,13 @@ function todo {
   fi
   local cmd=""
   case "${op}" in
-    l)
-      cmd="list"
+    l|list)
+      cmd="list --limit 100"
       ;;
-    cr)
+    a|add|create)
       cmd="create -b '' -t \"$*\""
       ;;
-    cl)
+    c|close)
       cmd="close $1"
       ;;
   esac
