@@ -179,3 +179,26 @@ if [ "${TMUX}" ]; then
   bindkey '^Z' _ctrl_z_handler
 
 fi
+
+# TODO list via github issues
+function todo {
+  local repo="${USER}/TODO"
+  local op="list"
+  if [ $# -gt 0 ]; then
+    op="$1"
+    shift
+  fi
+  local cmd=""
+  case "${op}" in
+    l)
+      cmd="list"
+      ;;
+    cr)
+      cmd="create -b '' -t \"$*\""
+      ;;
+    cl)
+      cmd="close $1"
+      ;;
+  esac
+  eval gh -R "${repo}" issue "${cmd}"
+}
