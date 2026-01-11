@@ -33,7 +33,8 @@ user := env('USER')
 # Top-level commands
 
 default: commit
-build: init test packages commit
+upgrade: packages commit
+build: init test upgrade
 
 
 
