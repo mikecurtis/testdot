@@ -17,7 +17,8 @@ dist_config_dir := justfile_directory() / 'dist/.config'
 staging_dir := justfile_directory() / 'staging'
 staging_config_dir := justfile_directory() / 'staging/.config'
 
-installer := require('./bin/install.sh')
+installer := require('./bin/install_packages.sh')
+package_list := './package_list.json'
 
 private_dir := justfile_directory() / 'private'
 hostenv := private_dir / '.env'
@@ -32,7 +33,7 @@ user := env('USER')
 # Top-level commands
 
 default: commit
-build: init packages commit
+build: init test packages commit
 
 
 
@@ -43,23 +44,16 @@ init:
 
 
 
+# Test facilities
+
+test:
+  ./validate_package_list.sh
+
+
 # Install required packages
 
 packages:
-  {{installer}} -p gettext-base envsubst
-  {{installer}} -p bat batcat
-  {{installer}} -p git-delta delta
-  {{installer}} eza
-  {{installer}} -W fonts-jetbrains-mono
-  {{installer}} fzf
-  {{installer}} gh
-  {{installer}} man
-  {{installer}} -s "https://mise.run" -F mise
-  {{installer}} -p neovim nvim
-  {{installer}} -p ripgrep rg
-  {{installer}} starship
-  {{installer}} tmux
-  {{installer}} zsh
+  {{installer}} {{package_list}}
 
 
 

@@ -1,0 +1,62 @@
+[ 
+  {
+    "name": "envsubst",
+    "default": {"package": "gettext"},
+    "ubuntu": {"package": "gettext-base"}
+  },
+  {
+    "name": "bat",
+    "default": {"package": "bat"}
+  },
+  {
+    "name": "delta",
+    "default": {"package": "git-delta"}
+  },
+  {
+    "name": "eza",
+    "default": {"package": "eza"}
+  },
+  {
+    "name": "font-jetbrains-mono",
+    "default": {"package": "font-jetbrains-mono", "check_which": false},
+    "ubuntu": {"package": "fonts-jetbrains-mono", "check_which": false},
+    "arch": {"package": "ttf-jetbrains-mono", "check_which": false}
+  },
+  {
+    "name": "fzf",
+    "default": {"package": "fzf"}
+  },
+  {
+    "name": "gh",
+    "default": {"package": "gh"},
+    "arch": {"package": "github-cli"}
+  },
+  {
+    "name": "man",
+    "default": {"package": "man"}
+  },
+  {
+    "name": "mise",
+    "default": {"script": "https://mise.run", "check_finish": false}
+  },
+  {
+    "name": "nvim",
+    "default": {"package": "neovim"}
+  },
+  {
+    "name": "rg",
+    "default": {"package": "ripgrep"}
+  },
+  {
+    "name": "starship",
+    "default": {"package": "starship"}
+  },
+  {
+    "name": "tmux",
+    "default": {"package": "tmux"}
+  },
+  {
+    "name": "zsh",
+    "default": {"package": "zsh"}
+  }
+]

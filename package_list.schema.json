@@ -1,0 +1,32 @@
+{
+  "title": "Package List",
+  "description": "List of packages to install",
+  "definitions": {
+    "installer": {
+      "type": "object",
+      "properties": {
+        "package": {"type": "string"},
+        "script": {"type": "string"},
+        "check_finish": {"type": "boolean", "default": true},
+        "check_which": {"type": "boolean", "default": true}
+      },
+      "oneOf": [
+        {"required": ["package"]},
+        {"required": ["script"]}
+      ]
+    },
+    "package": {
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "default": {"$ref": "#/definitions/installer"},
+        "darwin": {"$ref": "#/definitions/installer"},
+        "ubuntu": {"$ref": "#/definitions/installer"},
+        "arch": {"$ref": "#/definitions/installer"}
+      },
+      "required": ["name", "default"]
+    }
+  },
+  "type": "array",
+  "items": {"$ref": "#/definitions/package"}
+}
